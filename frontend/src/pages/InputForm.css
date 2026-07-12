@@ -1,0 +1,64 @@
+.input-form-page {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.type-toggle {
+    display: flex;
+    background-color: #f1f5f9;
+    border-radius: var(--radius-full);
+    padding: 0.25rem;
+}
+
+.toggle-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    transition: all 0.2s;
+}
+
+.toggle-btn.active {
+    background-color: var(--color-primary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.part-selector {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pill-btn {
+    padding: 0.375rem 1rem;
+    border-radius: var(--radius-full);
+    background: #f1f5f9;
+    border: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+.pill-btn.active {
+    background: var(--color-primary);
+    color: white;
+}
+
+.choices-grid,
+.answers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 640px) {
+
+    .choices-grid,
+    .answers-grid {
+        grid-template-columns: 1fr;
+    }
+}
