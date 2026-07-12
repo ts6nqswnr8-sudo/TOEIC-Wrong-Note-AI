@@ -851,10 +851,30 @@ jobs:
 
 ```
 # backend/.env.example
-OPENAI_API_KEY=sk-your-key-here
-DATABASE_URL=sqlite:///./data/toeic.db
-ALLOWED_ORIGINS=https://<user>.github.io
+APP_ENV=development
+LLM_PROVIDER=fake
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4o-mini
+DATABASE_URL=sqlite:///./toeic.db
 ```
+
+### 8-3. 환경 변수 및 LLM Provider 선택 정책
+
+로컬 데브서버와 테스트 실행 시 불필요한 API 과금을 막고 안정성을 확보하기 위해 환경별 LLM Provider를 다르게 동작시킵니다.
+
+| 환경 변수 | 허용/기본값 | 설명 |
+|---|---|---|
+| `APP_ENV` | `development`, `testing`, `production` (기본값: `development`) | 애플리케이션 실행 환경 모드 |
+| `LLM_PROVIDER` | `fake`, `openai` (기본값: `fake`) | LLM 모델 호출 모드 선택 |
+| `OPENAI_API_KEY` | 문자열 (기본값: 빈 문자열) | OpenAI API 인증 키 |
+| `OPENAI_MODEL` | `gpt-4o-mini` 등 (기본값: `gpt-4o-mini`) | OpenAI 모델 식별자 |
+| `DATABASE_URL` | `sqlite:///./toeic.db` | 데이터베이스 연결 주소 |
+
+#### 연동 및 유효성 검증 규칙 (Pydantic Settings):
+1. **운영 환경 강제 정책**: `APP_ENV=production`인 경우, `LLM_PROVIDER`는 반드시 `openai`여야 합니다. (`fake` 사용 불가)
+2. **API 키 존재 여부 검증**: `LLM_PROVIDER=openai` 설정 시 `OPENAI_API_KEY`가 생략되거나 비어 있으면 애플리케이션 시작 단계에서 즉시 오류(`ValueError`)를 발생시킵니다.
+3. **가짜(Fake) 모드 식별**: `FakeLLMProvider`는 API 요청 인자(질문, 선택지 등)를 수신해서 `ANALYSIS_GUIDE.md` 스펙의 dynamic mock JSON 응답을 돌려줍니다. 이때 디스클레이머(`disclaimer`) 값을 통해 "FakeLLMProvider(가짜 모델)"가 사용되었음을 알립니다.
+
 
 ### 8-2. CORS 설정
 

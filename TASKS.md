@@ -8,7 +8,7 @@
 ## 📈 프로젝트 진행 상황
 - [ ] Phase 0. 프로젝트 설정 (0/2)
 - [ ] Phase 1. 도메인 모델과 입력 검증 (2/3)
-- [ ] Phase 2. AI 분석 요청과 응답 파싱 (3/3)
+- [ ] Phase 2. AI 분석 요청과 응답 파싱 (3/4)
 - [ ] Phase 3. 오답 저장 및 조회 (1/4)
 - [ ] Phase 4. UI 개발 (React / Streamlit 고려) (0/4)
 - [ ] Phase 5. 통계 및 대시보드 (0/2)
@@ -88,18 +88,19 @@
 * **테스트 필요**: 예 (TDD 대상)
 * **결과 파일**: `src/application/prompt_builder.py`, `tests/unit/test_prompt_builder.py`
 
-### [TASK-202] OpenAI 연동 클라이언트 (인프라스트럭처) (완료)
-* **목적**: 실제 OpenAI API를 호출하고 Structured Output(JSON)을 파싱하는 구현체 작성
+### [TASK-202] 개발용 FakeLLMProvider 구현 (완료)
+* **목적**: 실제 외부 API 호출 없이 로컬 개발과 테스트가 가능하도록 가상 LLM 구현체 작성
 * **세부 작업**:
-  - `openai-python` 라이브러리를 활용한 `OpenAIClient` 클래스 작성 (`src/domain/interfaces.py`의 `AIService` 구현)
-  - `response_format` 인자를 활용하여 Pydantic 모델과 매핑
+  - `src/infrastructure/fake_llm_provider.py` 클래스 구현
+  - `ANALYSIS_GUIDE.md` 스키마와 부합하는 유효하고 풍부한 dynamic mock JSON 응답 생성
+  - 디스클레이머(disclaimer) 항목에 Fake/Mock 여부를 명시하여 식별 지원
 * **선행 작업**: [TASK-103], [TASK-201]
-* **완료 조건**: API 호출 시 (네트워크 오류 제외) 정해진 스키마의 `AnalysisResult` 객체를 반환하거나 에러를 방출함
-* **테스트 필요**: 예 (TDD 대상 - 외부 API Mocking 테스트)
-* **결과 파일**: `src/infrastructure/openai_client.py`, `tests/integration/test_openai_client.py`
+* **완료 조건**: APP_ENV=development 및 LLM_PROVIDER=fake 환경에서 가짜 API 응답이 완벽하게 200 OK로 반환됨
+* **테스트 필요**: 예 (TDD 대상 - dynamic mock 데이터 구성 검증)
+* **결과 파일**: `src/infrastructure/fake_llm_provider.py`, `tests/unit/test_llm_provider.py`
 
 ### [TASK-203] 오답 분석 비즈니스 서비스 (Application) (완료)
-* **목적**: 라우터와 AI 인프라 사이의 브릿지 역할을 하는 서비스 로직
+* **목적**: 데이터 밸리데이션, 프롬프트 조합기, Provider를 조율해 분석 결과를 전달하는 서비스 로직 구축
 * **세부 작업**:
   - 프롬프트를 구성하고 AI 객체를 호출하여 결과를 병합 및 리턴하는 `AnalysisService` 구현
   - 외부 문제(Rate Limit, API Key 등) 시의 예외(Exception) 통일 처리
@@ -107,6 +108,17 @@
 * **완료 조건**: `AnalyzeRequest`를 받아 `AnalysisResult`를 성공적으로 반환하는 Service Layer가 완성됨
 * **테스트 필요**: 예 (TDD 대상 - OpenAI 모방(Fake/Mock)을 사용한 서비스 계층 테스트)
 * **결과 파일**: `src/application/services.py`, `tests/unit/test_services.py`
+
+### [TASK-204] 실제 OpenAI API 및 프로덕션 정책 연동
+* **목적**: 프로덕션(APP_ENV=production) 배포를 대비하여 실제 OpenAI API 서비스(`OpenAIProvider`)를 결합하고 검증함
+* **세부 작업**:
+  - OpenAI 라이브러리를 사용해 `OpenAIProvider` 완성
+  - 환경변수 `LLM_PROVIDER=openai` 설정 지원
+  - `APP_ENV=production`에서 `OPENAI_API_KEY` 필수 조건 검출 및 에러 발생 검증
+* **선행 작업**: [TASK-203]
+* **완료 조건**: 실제 API 주입 시 Structured Output(JSON) 형태로 정합적으로 연동됨
+* **테스트 필요**: 예 (외부 API 호출 모킹 테스트 및 환경변수 설정 테스트)
+* **결과 파일**: `src/infrastructure/openai_client.py`, `tests/unit/test_openai_provider.py`, `src/config/settings.py`
 
 ---
 
