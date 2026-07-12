@@ -8,7 +8,7 @@
 ## 📈 프로젝트 진행 상황
 - [ ] Phase 0. 프로젝트 설정 (0/2)
 - [ ] Phase 1. 도메인 모델과 입력 검증 (2/3)
-- [ ] Phase 2. AI 분석 요청과 응답 파싱 (2/3)
+- [ ] Phase 2. AI 분석 요청과 응답 파싱 (3/3)
 - [ ] Phase 3. 오답 저장 및 조회 (0/4)
 - [ ] Phase 4. UI 개발 (React / Streamlit 고려) (0/4)
 - [ ] Phase 5. 통계 및 대시보드 (0/2)
@@ -88,7 +88,7 @@
 * **테스트 필요**: 예 (TDD 대상)
 * **결과 파일**: `src/application/prompt_builder.py`, `tests/unit/test_prompt_builder.py`
 
-### [TASK-202] OpenAI 연동 클라이언트 (인프라스트럭처)
+### [TASK-202] OpenAI 연동 클라이언트 (인프라스트럭처) (완료)
 * **목적**: 실제 OpenAI API를 호출하고 Structured Output(JSON)을 파싱하는 구현체 작성
 * **세부 작업**:
   - `openai-python` 라이브러리를 활용한 `OpenAIClient` 클래스 작성 (`src/domain/interfaces.py`의 `AIService` 구현)
