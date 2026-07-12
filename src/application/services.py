@@ -38,6 +38,7 @@ class AnalysisService:
         # 3. JSON 정제 및 AnalysisResult 도메인 인스턴스화
         try:
             result = self.response_parser.parse(raw_response)
+            result.part = request.part
             return result
         except ResponseParseException as e:
             raise AnalysisException(f"AI response parsing failed: {str(e)}") from e

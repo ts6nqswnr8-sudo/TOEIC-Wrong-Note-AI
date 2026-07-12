@@ -1,5 +1,7 @@
 from enum import Enum
 from typing import Dict, Any, List, Optional
+from uuid import UUID, uuid4
+from datetime import datetime
 from pydantic import BaseModel, Field, model_validator, ConfigDict
 from pydantic.alias_generators import to_camel
 
@@ -143,6 +145,9 @@ class Confidence(WrongNoteBaseModel):
 
 
 class AnalysisResult(WrongNoteBaseModel):
+    id: UUID = Field(default_factory=uuid4)
+    created_at: datetime = Field(default_factory=datetime.utcnow, alias="createdAt")
+    part: Optional[int] = None
     translation: Translation
     correct_answer: CorrectAnswer
     correct_reason: CorrectReason

@@ -9,7 +9,7 @@
 - [ ] Phase 0. 프로젝트 설정 (0/2)
 - [ ] Phase 1. 도메인 모델과 입력 검증 (2/3)
 - [ ] Phase 2. AI 분석 요청과 응답 파싱 (3/3)
-- [ ] Phase 3. 오답 저장 및 조회 (0/4)
+- [ ] Phase 3. 오답 저장 및 조회 (1/4)
 - [ ] Phase 4. UI 개발 (React / Streamlit 고려) (0/4)
 - [ ] Phase 5. 통계 및 대시보드 (0/2)
 - [ ] Phase 6. 배포 (0/3)
@@ -122,7 +122,7 @@
 * **테스트 필요**: 아니오 (설정의 영역에 해당)
 * **결과 파일**: `src/infrastructure/database.py`
 
-### [TASK-302] Note Repository 구현
+### [TASK-302] Note Repository 구현 (완료)
 * **목적**: 오답 노트를 DB에 저장하고, 조건별로 조회하는 데이터 접근 로직 구현
 * **세부 작업**:
   - `NoteRepository` 인터페이스를 상속받은 `SQLAlchemyNoteRepository` 구현
