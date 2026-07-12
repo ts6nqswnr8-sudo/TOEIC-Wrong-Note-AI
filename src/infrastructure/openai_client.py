@@ -12,14 +12,14 @@ class OpenAIProvider(LLMProvider):
     def __init__(
         self,
         api_key: str | None = None,
-        model: str = "gpt-4o-mini",
+        model: str | None = None,
         timeout: float = 30.0
     ) -> None:
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not self.api_key:
             raise ValueError("OPENAI_API_KEY is not set.")
 
-        self.model = model
+        self.model = model or os.getenv("OPENAI_MODEL") or "gpt-4o-mini"
         self.client = AsyncOpenAI(api_key=self.api_key, timeout=timeout)
 
     async def generate(self, system_prompt: str, user_prompt: str) -> str:
