@@ -8,7 +8,7 @@
 ## 📈 프로젝트 진행 상황
 - [ ] Phase 0. 프로젝트 설정 (0/2)
 - [ ] Phase 1. 도메인 모델과 입력 검증 (2/3)
-- [ ] Phase 2. AI 분석 요청과 응답 파싱 (1/3)
+- [ ] Phase 2. AI 분석 요청과 응답 파싱 (2/3)
 - [ ] Phase 3. 오답 저장 및 조회 (0/4)
 - [ ] Phase 4. UI 개발 (React / Streamlit 고려) (0/4)
 - [ ] Phase 5. 통계 및 대시보드 (0/2)
@@ -98,7 +98,7 @@
 * **테스트 필요**: 예 (TDD 대상 - 외부 API Mocking 테스트)
 * **결과 파일**: `src/infrastructure/openai_client.py`, `tests/integration/test_openai_client.py`
 
-### [TASK-203] 오답 분석 비즈니스 서비스 (Application)
+### [TASK-203] 오답 분석 비즈니스 서비스 (Application) (완료)
 * **목적**: 라우터와 AI 인프라 사이의 브릿지 역할을 하는 서비스 로직
 * **세부 작업**:
   - 프롬프트를 구성하고 AI 객체를 호출하여 결과를 병합 및 리턴하는 `AnalysisService` 구현
