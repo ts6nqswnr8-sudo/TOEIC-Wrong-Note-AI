@@ -1,7 +1,7 @@
 import pytest
 from src.application.services import AnalysisService, AnalysisException
 from src.application.prompt_builder import PromptBuilder
-from src.application.response_parser import ResponseParser
+from src.application.response_parser import AnalysisResultParser # AnalysisResultParser 명칭으로 임포트
 from src.domain.models import AnalyzeRequest, TestType, ChoiceLabel, AnalysisResult
 from tests.unit.test_llm_provider import FakeLLMProvider
 
@@ -82,10 +82,10 @@ def mock_ai_response():
 
 @pytest.mark.asyncio
 async def test_analysis_service_success(sample_request, mock_ai_response):
-    """정상적인 흐름에서 Service가 prompt_builder, llm_provider, response_parser를 오차 없이 중개하여 최종 도메인 결과를 리턴하는지 검증"""
+    """정상적인 흐름에서 Service가 prompt_builder, llm_provider, AnalysisResultParser를 사용해 AnalysisResult 결과를 리턴하는지 검증"""
     fake_llm = FakeLLMProvider(mock_ai_response)
     builder = PromptBuilder()
-    parser = ResponseParser()
+    parser = AnalysisResultParser()  # AnalysisResultParser 사용
     
     service = AnalysisService(
         prompt_builder=builder,
@@ -101,7 +101,7 @@ async def test_analysis_service_success(sample_request, mock_ai_response):
 
 @pytest.mark.asyncio
 async def test_analysis_service_llm_failure(sample_request):
-    """LLM Provider 내부 호출 실패 시 AnalysisException 예외로 통합 격상 처리하는가"""
+    """LLM Provider 내부 호출 실패 시 AnalysisException 예외가 성립하는지 검증"""
     class FailLLMProvider(FakeLLMProvider):
         async def generate(self, system_prompt: str, user_prompt: str) -> str:
             raise RuntimeError("API Timeout / OpenAI Server Error")
@@ -109,7 +109,7 @@ async def test_analysis_service_llm_failure(sample_request):
     service = AnalysisService(
         prompt_builder=PromptBuilder(),
         llm_provider=FailLLMProvider(),
-        response_parser=ResponseParser()
+        response_parser=AnalysisResultParser() # AnalysisResultParser 사용
     )
     
     with pytest.raises(AnalysisException) as excinfo:
@@ -120,13 +120,13 @@ async def test_analysis_service_llm_failure(sample_request):
 
 @pytest.mark.asyncio
 async def test_analysis_service_parse_failure(sample_request):
-    """AI 응답 반환값 파싱 및 Validation 유효성 에러 시 AnalysisException 예외로 가공 처리하는가"""
+    """AI 응답 파싱 실패 시 AnalysisException 예외 처리 검증"""
     fake_llm = FakeLLMProvider("{'invalid_json_format':")
     
     service = AnalysisService(
         prompt_builder=PromptBuilder(),
         llm_provider=fake_llm,
-        response_parser=ResponseParser()
+        response_parser=AnalysisResultParser() # AnalysisResultParser 사용
     )
     
     with pytest.raises(AnalysisException) as excinfo:

@@ -38,3 +38,7 @@ class ResponseParser:
             return result
         except ValidationError as e:
             raise ResponseParseException(f"Validation failed for AnalysisResult: {str(e)}") from e
+
+
+AnalysisResultParser = ResponseParser
+
