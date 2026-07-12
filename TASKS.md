@@ -7,8 +7,8 @@
 
 ## 📈 프로젝트 진행 상황
 - [ ] Phase 0. 프로젝트 설정 (0/2)
-- [ ] Phase 1. 도메인 모델과 입력 검증 (1/3)
-- [ ] Phase 2. AI 분석 요청과 응답 파싱 (0/3)
+- [ ] Phase 1. 도메인 모델과 입력 검증 (2/3)
+- [ ] Phase 2. AI 분석 요청과 응답 파싱 (1/3)
 - [ ] Phase 3. 오답 저장 및 조회 (0/4)
 - [ ] Phase 4. UI 개발 (React / Streamlit 고려) (0/4)
 - [ ] Phase 5. 통계 및 대시보드 (0/2)
@@ -44,7 +44,7 @@
 
 ## Phase 1. 도메인 모델과 입력 검증
 
-### [TASK-101] AI 분석 응답 도메인 모델 구현
+### [TASK-101] AI 분석 응답 도메인 모델 구현 (완료)
 * **목적**: `ANALYSIS_GUIDE.md`에 파편화된 JSON 스키마를 Pydantic 모델로 정의
 * **세부 작업**:
   - 오답 유형(ErrorCategoryCode)과 PartOfSpeech 등 Enum 구현
@@ -78,7 +78,7 @@
 
 ## Phase 2. AI 분석 요청과 응답 파싱
 
-### [TASK-201] AI 프롬프트 빌더 구현
+### [TASK-201] AI 프롬프트 빌더 구현 (완료)
 * **목적**: `AnalyzeRequest`를 입력받아 AI에게 전송할 최적화된 프롬프트 문자열 조합
 * **세부 작업**:
   - `ANALYSIS_GUIDE.md` 내용을 주입하는 시스템 프롬프트 관리자 구축
